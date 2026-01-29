@@ -33,14 +33,16 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.creator.ExampleScreen
 import com.example.newcomposesample.ui.theme.NewComposeSampleTheme
 import kotlinx.coroutines.flow.flow
+import java.io.File
 
 class MainActivity : ComponentActivity() {
-    @SuppressLint("RestrictedApi")
+    @SuppressLint("RestrictedApi", "UnusedBoxWithConstraintsScope")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             NewComposeSampleTheme {
+
                 val context = LocalContext.current
 
                 var document by remember { mutableStateOf<CoreDocument?>(null) }
@@ -54,7 +56,6 @@ class MainActivity : ComponentActivity() {
                 BoxWithConstraints(
                     modifier = Modifier.safeDrawingPadding()
                 ) {
-
                     document?.let { document ->
                         RemoteDocumentPlayer(
                             document = document,
@@ -67,6 +68,7 @@ class MainActivity : ComponentActivity() {
                             }
                         )
                     }
+                    //ExampleScreen.RemoteScreen()
                 }
             }
         }
