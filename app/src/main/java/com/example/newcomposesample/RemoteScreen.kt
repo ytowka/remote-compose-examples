@@ -5,19 +5,19 @@ import android.util.Log
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.remote.core.CoreDocument
 import androidx.compose.remote.player.compose.RemoteDocumentPlayer
 import androidx.compose.remote.player.core.RemoteDocument
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import coil3.ImageLoader
 import com.example.creator.createDocumentV1
 import com.example.creator.examples.StateChangeExample
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 
@@ -26,21 +26,11 @@ import kotlinx.coroutines.flow.map
 fun RemoteScreen(
     debugMode: Int = 2
 ) {
-    val context = LocalContext.current
+    val bitmapLoader = rememberBitmapLoader()
 
-    val bitmapLoader = remember {
-        val imageLoader = ImageLoader.Builder(context)
-            .build()
-
-        CoilBitmapLoader(context, imageLoader)
-    }
-
-    val bytes by createDocumentV1 { StateChangeExample() }
-    val document by remember {
-        snapshotFlow { bytes }
-            .filterNotNull()
-            .map { RemoteDocument(it).document }
-    }.collectAsState(null)
+    val document by createDocumentV1 {
+        StateChangeExample()
+    }.collectAsDocumentState()
 
     BoxWithConstraints(
         modifier = Modifier.safeDrawingPadding()
@@ -60,4 +50,14 @@ fun RemoteScreen(
             )
         }
     }
+}
+
+@SuppressLint("RestrictedApi")
+@Composable
+fun Flow<ByteArray?>.collectAsDocumentState(): State<CoreDocument?> {
+    return remember {
+        this
+            .filterNotNull()
+            .map { RemoteDocument(it).document }
+    }.collectAsState(null)
 }

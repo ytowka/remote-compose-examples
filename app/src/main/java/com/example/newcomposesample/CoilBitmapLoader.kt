@@ -4,6 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.compose.remote.player.core.platform.BitmapLoader
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.compose.ui.platform.LocalContext
 import coil3.ImageLoader
 import coil3.request.ErrorResult
 import coil3.request.ImageRequest
@@ -32,11 +35,21 @@ class CoilBitmapLoader(
                 val bitmap = result.image.toBitmap()
 
                 val outputStream = ByteArrayOutputStream()
-                // Compress the bitmap to the output stream
                 bitmap.compress(Bitmap.CompressFormat.PNG, 0, outputStream)
-                // Create an input stream from the byte array
                 ByteArrayInputStream(outputStream.toByteArray())
             }
         }
+    }
+}
+
+@SuppressLint("RestrictedApi")
+@Composable
+fun rememberBitmapLoader(): BitmapLoader {
+    val context = LocalContext.current
+    return remember {
+        val imageLoader = ImageLoader.Builder(context)
+            .build()
+
+        CoilBitmapLoader(context, imageLoader)
     }
 }
