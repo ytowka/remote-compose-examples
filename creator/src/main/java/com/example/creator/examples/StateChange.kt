@@ -2,6 +2,7 @@ package com.example.creator.examples
 
 import android.annotation.SuppressLint
 import android.util.Log
+import androidx.compose.remote.creation.compose.action.HostAction
 import androidx.compose.remote.creation.compose.action.ValueChange
 import androidx.compose.remote.creation.compose.capture.RemoteDensity
 import androidx.compose.remote.creation.compose.layout.RemoteColumn
@@ -40,7 +41,8 @@ fun StateChangeExample() {
             RemoteButton(
                 text = "button $it".rs,
                 paddings = 12.rdp,
-                ValueChange(visibilityIntState, 1)
+                ValueChange(visibilityIntState, 1),
+                HostAction("action".rs, "clicked $it".rs)
                 //ValueChange(intState, selectIfGE(intState, 1.ri, 0.ri, 1.ri)),
                 //ValueChange(intState, selectIfGT(intState, 0.ri, 0.ri, 1.ri)),
 

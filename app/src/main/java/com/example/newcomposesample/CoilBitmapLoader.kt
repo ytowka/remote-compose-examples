@@ -3,6 +3,7 @@ package com.example.newcomposesample
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.compose.remote.player.core.platform.BitmapLoader
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -29,6 +30,8 @@ class CoilBitmapLoader(
         val result = runBlocking {
             imageLoader.execute(request)
         }
+
+        Log.d("debuggg", "loadBitmap() called with: url = $url, result = ${result.image?.height}")
         return when(result) {
             is ErrorResult -> throw Exception()
             is SuccessResult -> {

@@ -13,6 +13,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.take
 
 @OptIn(ExperimentalRemoteCreationComposeApi::class)
 @SuppressLint("RestrictedApi")
@@ -46,6 +47,6 @@ fun createDocumentV2(content: @Composable () -> Unit): Flow<ByteArray?> {
             creationDisplayInfo = createCreationDisplayInfo(context),
             writerEvents = WriterEvents(),
             content = content
-        )
+        ).take(10)
     }
 }

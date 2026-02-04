@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        RemoteComposePlayerFlags.isViewPlayerEnabled = false
+        RemoteComposePlayerFlags.isViewPlayerEnabled = true
 
         setContent {
             NewComposeSampleTheme {
