@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import com.example.creator.createDocumentV1
 import com.example.creator.examples.ImageExample
+import com.example.creator.examples.SimpleExample
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
@@ -31,7 +32,7 @@ fun RemoteScreen(
     val bitmapLoader = rememberBitmapLoader()
 
     val document by createDocumentV1 {
-        ImageExample()
+        SimpleExample()
     }.collectAsDocumentState()
 
 

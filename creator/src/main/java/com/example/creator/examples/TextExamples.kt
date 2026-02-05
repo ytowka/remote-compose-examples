@@ -54,7 +54,7 @@ fun TextExamples() {
             //modifier = RemoteModifier.visibility(intState),
             text = "Styled Text",
             modifier = RemoteModifier.fillMaxWidth(),
-            color = RemoteColor(Color(0xFFef3124)),
+            color = RemoteColor(Color(0xFF910B00)),
             fontSize = 26.sp,
             fontStyle = FontStyle.Italic,
             fontWeight = FontWeight.Black,
