@@ -16,8 +16,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import com.example.creator.createDocumentV1
-import com.example.creator.examples.ImageExample
-import com.example.creator.examples.SimpleExample
+import com.example.creator.examples.AnimationExample
+import com.example.creator.examples.StateChangeExample
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
@@ -27,12 +27,12 @@ import kotlin.io.encoding.Base64
 @SuppressLint("RestrictedApi")
 @Composable
 fun RemoteScreen(
-    debugMode: Int = 2
+    debugMode: Int = 0
 ) {
     val bitmapLoader = rememberBitmapLoader()
 
     val document by createDocumentV1 {
-        SimpleExample()
+        AnimationExample()
     }.collectAsDocumentState()
 
 
@@ -65,6 +65,9 @@ fun Flow<ByteArray?>.collectAsDocumentState(): State<CoreDocument?> {
             .onEach {
                 Log.d("debuggg", "collectAsDocumentState(): ${Base64.encode(it)}")
             }
-            .map { RemoteDocument(it).document }
+            .map {
+                val doc = RemoteDocument(it).document
+                doc
+            }
     }.collectAsState(null)
 }

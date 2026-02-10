@@ -37,7 +37,7 @@ fun ImageExample() {
         RemoteCanvas(
             modifier = RemoteModifier.size(100.rdp)
         ) {
-
+            drawImage(bitmap)
         }
     }
 }

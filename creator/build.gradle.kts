@@ -50,6 +50,8 @@ dependencies {
     implementation(libs.compose.remote.core)
     implementation(libs.compose.remote.creation.core)
     implementation(libs.compose.remote.creation.compose)
+    implementation(libs.compose.remote.creation.android)
+    //implementation(libs.compose.remote.creation.jvm)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

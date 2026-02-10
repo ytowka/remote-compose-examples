@@ -41,8 +41,8 @@ fun StateChangeExample() {
             RemoteButton(
                 text = "button $it".rs,
                 paddings = 12.rdp,
-                ValueChange(visibilityIntState, 1),
-                HostAction("action".rs, "clicked $it".rs)
+                actions = listOf(ValueChange(visibilityIntState, 1),
+                HostAction("action".rs, "clicked $it".rs))
                 //ValueChange(intState, selectIfGE(intState, 1.ri, 0.ri, 1.ri)),
                 //ValueChange(intState, selectIfGT(intState, 0.ri, 0.ri, 1.ri)),
 
