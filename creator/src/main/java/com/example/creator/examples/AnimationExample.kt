@@ -1,8 +1,10 @@
 package com.example.creator.examples
 
 import android.annotation.SuppressLint
+import android.util.Log
 import androidx.compose.remote.creation.Rc
 import androidx.compose.remote.creation.compose.action.ValueChange
+import androidx.compose.remote.creation.compose.capture.LocalRemoteComposeCreationState
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
 import androidx.compose.remote.creation.compose.layout.RemoteArrangement
 import androidx.compose.remote.creation.compose.layout.RemoteColumn
@@ -21,6 +23,7 @@ import androidx.compose.remote.creation.compose.state.rememberRemoteIntValue
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.ri
 import androidx.compose.remote.creation.compose.state.rs
+import androidx.compose.remote.creation.compose.state.selectIfGE
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.sp
 import com.example.creator.RemoteButton
@@ -32,7 +35,11 @@ import com.example.creator.RemoteSpacer
 fun AnimationExample() {
     val alpha = rememberMutableRemoteFloat { 0.rf } // rememberMutableRemoteFloat не работает
     val visibility = rememberRemoteIntValue { 0 }
+    val marker = rememberRemoteIntValue { 7777 }
     val alphaI = rememberRemoteIntValue { 0 }
+
+    alphaI.idProvider
+    Log.d("debuggg", "AnimationExample() called ${alphaI.getIdForCreationState(LocalRemoteComposeCreationState.current)} ${visibility.getIdForCreationState(LocalRemoteComposeCreationState.current)}")
     val opacity = animateRemoteFloat(alphaI.toRemoteFloat(), duration = 1f, initialValue = 0f)
     RemoteColumn(
         modifier = RemoteModifier
@@ -51,6 +58,13 @@ fun AnimationExample() {
         RemoteButton(
             text = "animate: ".rs + opacity.toRemoteString(before = 30),
             actions = listOf(
+               /*
+               Не работает из-за бага библиотеки. Можно проверить работу, если в CoreDocument.java с
+               помощью дебаггера подменить IntegerExpression на нужный на 475 строке
+               ValueChange(
+                    alphaI,
+                    selectIfGE(alphaI, 1.ri, 0.ri, 1.ri)
+                ),*/
                 ValueChange(alphaI, 1.ri),
                 ValueChange(visibility, 1.ri),
             )
