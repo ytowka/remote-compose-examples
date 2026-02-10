@@ -1,16 +1,15 @@
 package com.example.creator.examples
 
 import android.annotation.SuppressLint
-import android.util.Log
-import androidx.compose.remote.creation.Rc
 import androidx.compose.remote.creation.compose.action.ValueChange
-import androidx.compose.remote.creation.compose.capture.LocalRemoteComposeCreationState
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
 import androidx.compose.remote.creation.compose.layout.RemoteArrangement
+import androidx.compose.remote.creation.compose.layout.RemoteCollapsibleColumn
 import androidx.compose.remote.creation.compose.layout.RemoteColumn
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.layout.RemoteText
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
+import androidx.compose.remote.creation.compose.modifier.animationSpec
 import androidx.compose.remote.creation.compose.modifier.fillMaxSize
 import androidx.compose.remote.creation.compose.modifier.graphicsLayer
 import androidx.compose.remote.creation.compose.modifier.rememberRemoteScrollState
@@ -23,7 +22,6 @@ import androidx.compose.remote.creation.compose.state.rememberRemoteIntValue
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.ri
 import androidx.compose.remote.creation.compose.state.rs
-import androidx.compose.remote.creation.compose.state.selectIfGE
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.sp
 import com.example.creator.RemoteButton
@@ -35,11 +33,8 @@ import com.example.creator.RemoteSpacer
 fun AnimationExample() {
     val alpha = rememberMutableRemoteFloat { 0.rf } // rememberMutableRemoteFloat не работает
     val visibility = rememberRemoteIntValue { 0 }
-    val marker = rememberRemoteIntValue { 7777 }
     val alphaI = rememberRemoteIntValue { 0 }
 
-    alphaI.idProvider
-    Log.d("debuggg", "AnimationExample() called ${alphaI.getIdForCreationState(LocalRemoteComposeCreationState.current)} ${visibility.getIdForCreationState(LocalRemoteComposeCreationState.current)}")
     val opacity = animateRemoteFloat(alphaI.toRemoteFloat(), duration = 1f, initialValue = 0f)
     RemoteColumn(
         modifier = RemoteModifier
@@ -49,8 +44,11 @@ fun AnimationExample() {
         verticalArrangement = RemoteArrangement.Center,
         horizontalAlignment = RemoteAlignment.CenterHorizontally,
     ) {
+        RemoteSpacer(12.rdp)
         RemoteText(
-            modifier = RemoteModifier.graphicsLayer(alpha = opacity),
+            modifier = RemoteModifier
+                .visibility(visibility)
+                .graphicsLayer(alpha = opacity),
             text = "animated",
             fontSize = 20.sp
         )
@@ -68,12 +66,6 @@ fun AnimationExample() {
                 ValueChange(alphaI, 1.ri),
                 ValueChange(visibility, 1.ri),
             )
-        )
-        RemoteSpacer(12.rdp )
-        RemoteText(
-            modifier = RemoteModifier.visibility(visibility),
-            text = "visible",
-            fontSize = 20.sp
         )
     }
 }

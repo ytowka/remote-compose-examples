@@ -1,6 +1,7 @@
 package com.example.creator
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -36,20 +37,27 @@ fun createDocumentV1(content: @Composable () -> Unit): Flow<ByteArray?> {
     val context = LocalContext.current
     return remember {
         flow {
-            val document = captureSingleRemoteDocument(
-                context = context,
-                content = {
-                    content()
-                },
-                creationDisplayInfo = CreationDisplayInfo(
-                    context.resources.displayMetrics.widthPixels,
-                    context.resources.displayMetrics.heightPixels,
-                    context.resources.displayMetrics.densityDpi,
-                )
-            ).bytes
+            val document = createDocumentV1(context, content)
             emit(document)
         }
     }
+}
+
+suspend fun createDocumentV1(
+    context: Context,
+    content: @Composable () -> Unit
+): ByteArray {
+    return captureSingleRemoteDocument(
+        context = context,
+        content = {
+            content()
+        },
+        creationDisplayInfo = CreationDisplayInfo(
+            context.resources.displayMetrics.widthPixels,
+            context.resources.displayMetrics.heightPixels,
+            context.resources.displayMetrics.densityDpi,
+        )
+    ).bytes
 }
 
 @OptIn(ExperimentalRemoteCreationComposeApi::class)

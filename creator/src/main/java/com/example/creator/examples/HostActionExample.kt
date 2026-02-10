@@ -9,10 +9,12 @@ import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
 import androidx.compose.remote.creation.compose.modifier.fillMaxSize
 import androidx.compose.remote.creation.compose.modifier.fillMaxWidth
+import androidx.compose.remote.creation.compose.modifier.padding
 import androidx.compose.remote.creation.compose.modifier.rememberRemoteScrollState
 import androidx.compose.remote.creation.compose.modifier.verticalScroll
 import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.rdp
+import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.ri
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.runtime.Composable
@@ -21,10 +23,10 @@ import com.example.creator.RemoteButton
 import com.example.creator.RemoteSpacer
 
 @SuppressLint("RestrictedApi")
-private val regularColor = RemoteColor("#CBCBFF".toColorInt())
+private val regularColor = RemoteColor("#CBCBCB".toColorInt())
 
 @SuppressLint("RestrictedApi")
-private val selectedColor = RemoteColor("#5252FF".toColorInt())
+private val selectedColor = RemoteColor("#FF5252".toColorInt())
 
 
 
@@ -38,6 +40,7 @@ fun HostActionExample(
     RemoteColumn(
         modifier = RemoteModifier
             .verticalScroll(rememberRemoteScrollState())
+            .padding(horizontal = 24.rf)
             .fillMaxSize(),
         verticalArrangement = RemoteArrangement.Center,
         horizontalAlignment = RemoteAlignment.CenterHorizontally,
