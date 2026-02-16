@@ -72,7 +72,8 @@ fun createDocumentV2(content: @Composable () -> Unit): Flow<ByteArray?> {
         captureRemoteDocumentV2(
             creationDisplayInfo = createCreationDisplayInfo(context),
             writerEvents = WriterEvents(),
+            context = context,
             content = content
-        ).take(10)
+        ).take(1)
     }
 }

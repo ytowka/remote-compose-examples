@@ -40,6 +40,10 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
 
+
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)

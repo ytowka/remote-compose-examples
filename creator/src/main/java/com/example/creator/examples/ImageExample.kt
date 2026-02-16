@@ -12,8 +12,8 @@ import androidx.compose.remote.creation.compose.modifier.size
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rememberRemoteBitmap
 import androidx.compose.remote.creation.compose.state.rf
+import androidx.compose.remote.creation.compose.v2.RemoteImageV2
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
 
 @SuppressLint("RestrictedApi")
 @Composable
@@ -21,7 +21,6 @@ import androidx.compose.ui.graphics.Color
 fun ImageExample() {
     RemoteColumn(
         modifier = RemoteModifier
-            .background(color = Color.Gray)
             .padding(all = 16.rf)
             .fillMaxSize(),
     ) {
@@ -31,7 +30,6 @@ fun ImageExample() {
             width = 100,
             height = 100,
         )
-
 
 
         RemoteCanvas(
