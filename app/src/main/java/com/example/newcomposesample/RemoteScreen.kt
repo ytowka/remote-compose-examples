@@ -1,6 +1,12 @@
 package com.example.newcomposesample
 
 import android.annotation.SuppressLint
+import android.content.ContentValues
+import android.content.Context
+import android.net.Uri
+import android.os.Build
+import android.os.Environment
+import android.provider.MediaStore
 import android.util.Log
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,24 +21,28 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import com.example.creator.createDocumentV2
+import com.example.creator.examples.DataViewExample
 import com.example.creator.examples.ImageExample
+import com.example.creator.examples.LargeExample
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
+import java.io.File
 import kotlin.io.encoding.Base64
 import kotlin.time.measureTimedValue
 
 @SuppressLint("RestrictedApi")
 @Composable
 fun RemoteScreen(
-    debugMode: Int = 2
+    debugMode: Int = 0
 ) {
     val bitmapLoader = rememberBitmapLoader()
 
     val document by createDocumentV2 {
-        ImageExample()
+        LargeExample()
     }.collectAsDocumentState()
 
 
@@ -66,12 +76,43 @@ fun RemoteScreen(
 @SuppressLint("RestrictedApi")
 @Composable
 fun Flow<ByteArray?>.collectAsDocumentState(): State<CoreDocument?> {
+    val context: Context = LocalContext.current
     return remember {
         this
             .filterNotNull()
-            .map {
-                val (doc, duration) = measureTimedValue{ RemoteDocument(it).document }
-                Log.d("debuggg", "collectAsDocumentState duration = $duration: ${Base64.encode(it)}")
+            .map { byteArray ->
+                val (doc, duration) = measureTimedValue{ RemoteDocument(byteArray).document }
+                Log.d("debuggg", "collectAsDocumentState duration = $duration: ${Base64.encode(byteArray)}")
+                val timestamp = java.text.SimpleDateFormat("yyyyMMdd_HHmmss", java.util.Locale.getDefault()).format(java.util.Date())
+                val filename = "document_$timestamp.txt"
+
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.Downloads.DISPLAY_NAME, filename)
+                    put(MediaStore.Downloads.MIME_TYPE, "text/plain")
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                        put(MediaStore.Downloads.IS_PENDING, 1)
+                    }
+                }
+
+                val uri = context.contentResolver.insert(
+                    MediaStore.Downloads.EXTERNAL_CONTENT_URI,
+                    contentValues
+                )
+
+                uri?.let {
+                    try {
+                        context.contentResolver.openOutputStream(it)?.use { outputStream ->
+                            outputStream.write(Base64.encode(byteArray).toByteArray())
+                        }
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                            contentValues.clear()
+                            contentValues.put(MediaStore.Downloads.IS_PENDING, 0)
+                            context.contentResolver.update(it, contentValues, null, null)
+                        }
+                    } catch (e: Exception) {
+                        Log.e("debuggg", "Failed to write file $filename: ${e.message}")
+                    }
+                }
                 doc
             }
     }.collectAsState(null)
