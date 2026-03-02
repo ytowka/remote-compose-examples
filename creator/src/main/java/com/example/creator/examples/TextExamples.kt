@@ -13,6 +13,8 @@ import androidx.compose.remote.creation.compose.modifier.padding
 import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rf
+import androidx.compose.remote.creation.compose.state.rsp
+import androidx.compose.remote.creation.compose.text.RemoteTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
@@ -39,14 +41,10 @@ fun TextExamples() {
             //modifier = RemoteModifier.visibility(intState),
             text = "LocalTextStyle Text",
             modifier = RemoteModifier.fillMaxWidth(),
-            style = TextStyle(
-                fontSize = 30.sp,
+            style = RemoteTextStyle(
+                fontSize = 30.rsp,
                 fontWeight = FontWeight.Bold,
-                lineHeightStyle = LineHeightStyle(
-                    alignment = LineHeightStyle.Alignment.Center,
-                    trim = LineHeightStyle.Trim.None
-                ),
-                lineHeight = 36.sp
+                lineHeight = 36.rsp
             )
         )
         RemoteSpacer(12.rdp)
@@ -55,14 +53,14 @@ fun TextExamples() {
             text = "Styled Text",
             modifier = RemoteModifier.fillMaxWidth(),
             color = RemoteColor(Color(0xFF910B00)),
-            fontSize = 26.sp,
+            fontSize = 26.rsp,
             fontStyle = FontStyle.Italic,
             fontWeight = FontWeight.Black,
             fontFamily = FontFamily.Monospace,
             textAlign = TextAlign.Center,
             overflow = TextOverflow.Clip,
             maxLines = Int.MAX_VALUE,
-            style = LocalTextStyle.current,
+            style = RemoteTextStyle(),
         )
     }
 }

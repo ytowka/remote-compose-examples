@@ -1,28 +1,21 @@
 package com.example.creator.examples
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.remote.core.operations.ColorAttribute
-import androidx.compose.remote.core.operations.ColorTheme
 import androidx.compose.remote.creation.compose.capture.LocalRemoteComposeCreationState
 import androidx.compose.remote.creation.compose.layout.RemoteColumn
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.layout.RemoteText
-import androidx.compose.remote.creation.compose.layout.WriteToDocument
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
-import androidx.compose.remote.creation.compose.modifier.background
 import androidx.compose.remote.creation.compose.modifier.drawWithContent
 import androidx.compose.remote.creation.compose.modifier.fillMaxSize
 import androidx.compose.remote.creation.compose.modifier.padding
-import androidx.compose.remote.creation.compose.shaders.RemoteBrush
-import androidx.compose.remote.creation.compose.shaders.solidColor
 import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.RemotePaint
 import androidx.compose.remote.creation.compose.state.rf
+import androidx.compose.remote.creation.compose.state.rsp
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.toInt
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.sp
 
 @SuppressLint("RestrictedApi")
 @RemoteComposable
@@ -55,7 +48,7 @@ fun ThemeExample() {
     ) {
         RemoteText(
             text = "Hello Remote Compose",
-            fontSize = 18.sp,
+            fontSize = 18.rsp,
             color = RemoteColor(Color(0xFF000000))
         )
     }

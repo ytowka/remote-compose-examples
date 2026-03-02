@@ -16,10 +16,13 @@ import androidx.compose.remote.creation.compose.modifier.visibility
 import androidx.compose.remote.creation.compose.state.animateRemoteFloat
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rememberMutableRemoteFloat
+import androidx.compose.remote.creation.compose.state.rememberMutableRemoteInt
 import androidx.compose.remote.creation.compose.state.rememberRemoteIntValue
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.ri
 import androidx.compose.remote.creation.compose.state.rs
+import androidx.compose.remote.creation.compose.state.rsp
+import androidx.compose.remote.creation.compose.state.selectIfGe
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.sp
 import com.example.creator.RemoteButton
@@ -29,11 +32,10 @@ import com.example.creator.RemoteSpacer
 @Composable
 @RemoteComposable
 fun AnimationExample() {
-    val alpha = rememberMutableRemoteFloat { 0.rf } // rememberMutableRemoteFloat не работает
-    val visibility = rememberRemoteIntValue { 0 }
-    val alphaI = rememberRemoteIntValue { 0 }
+    val alpha = rememberMutableRemoteFloat { 0.rf }
+    val visibility = rememberMutableRemoteInt(0)
 
-    val opacity = animateRemoteFloat(alphaI.toRemoteFloat(), duration = 1f, initialValue = 0f)
+    val opacity = animateRemoteFloat(alpha, duration = 1f, initialValue = 0f)
     RemoteColumn(
         modifier = RemoteModifier
             .fillMaxSize()
@@ -48,7 +50,7 @@ fun AnimationExample() {
                 .visibility(visibility)
                 .graphicsLayer(alpha = opacity),
             text = "animated",
-            fontSize = 20.sp
+            fontSize = 20.rsp
         )
         RemoteSpacer(12.rdp )
         RemoteButton(
@@ -58,10 +60,10 @@ fun AnimationExample() {
                Не работает из-за бага библиотеки. Можно проверить работу, если в CoreDocument.java с
                помощью дебаггера подменить IntegerExpression на нужный на 475 строке
                ValueChange(
-                    alphaI,
-                    selectIfGE(alphaI, 1.ri, 0.ri, 1.ri)
+                   visibility,
+                   selectIfGe(visibility, 1.ri, 0.ri, 1.ri)
                 ),*/
-                ValueChange(alphaI, 1.ri),
+                ValueChange(alpha, 1.rf),
                 ValueChange(visibility, 1.ri),
             )
         )

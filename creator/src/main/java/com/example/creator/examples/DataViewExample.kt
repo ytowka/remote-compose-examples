@@ -21,7 +21,6 @@ import androidx.compose.remote.creation.compose.shaders.RemoteBrush
 import androidx.compose.remote.creation.compose.shaders.RemoteLinearGradient
 import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.rdp
-import androidx.compose.remote.creation.compose.state.rememberRemoteBitmap
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.runtime.Composable
@@ -78,16 +77,5 @@ fun DataViewExample() {
                 .size(40.rdp),
             text = "Fa".rs
         )
-    }
-}
-
-@Composable
-@RemoteComposable
-@SuppressLint("RestrictedApi")
-fun RemoteImage(modifier: RemoteModifier = RemoteModifier, url: String) {
-    val bitmap = rememberRemoteBitmap(name = "remoteImage", url = url, width = 100, height = 100)
-
-    RemoteCanvas(modifier = modifier.size(40.rdp)) {
-        drawImage(bitmap)
     }
 }

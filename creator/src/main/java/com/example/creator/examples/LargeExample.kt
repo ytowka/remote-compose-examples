@@ -4,12 +4,13 @@ import android.annotation.SuppressLint
 import androidx.compose.remote.creation.compose.action.HostAction
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
 import androidx.compose.remote.creation.compose.layout.RemoteArrangement
+import androidx.compose.remote.creation.compose.layout.RemoteBox
 import androidx.compose.remote.creation.compose.layout.RemoteColumn
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
-import androidx.compose.remote.creation.compose.layout.RemoteImage
 import androidx.compose.remote.creation.compose.layout.RemoteRow
 import androidx.compose.remote.creation.compose.layout.RemoteText
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
+import androidx.compose.remote.creation.compose.modifier.background
 import androidx.compose.remote.creation.compose.modifier.clickable
 import androidx.compose.remote.creation.compose.modifier.fillMaxSize
 import androidx.compose.remote.creation.compose.modifier.fillMaxWidth
@@ -19,7 +20,6 @@ import androidx.compose.remote.creation.compose.modifier.size
 import androidx.compose.remote.creation.compose.modifier.verticalScroll
 import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.rdp
-import androidx.compose.remote.creation.compose.state.rememberRemoteBitmap
 import androidx.compose.remote.creation.compose.state.rf
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.runtime.Composable
@@ -52,7 +52,7 @@ fun LargeExample() {
         verticalArrangement = RemoteArrangement.Center,
         horizontalAlignment = RemoteAlignment.CenterHorizontally,
     ) {
-        repeat(50) {
+        repeat(5) {
             RemoteRow(
                 modifier = RemoteModifier
                     .fillMaxWidth()
@@ -60,15 +60,10 @@ fun LargeExample() {
                     .clickable(HostAction(name = "click".rs, value = "payload".rs))
                     .padding(horizontal = 30.rf, vertical = 24.rf)
             ) {
-                val bitmap = rememberRemoteBitmap(
-                    name = "image",
-                    url = "https://alfa-mobile.alfabank.ru/mobile/s3/static/referral/Urgant.png",
-                )
-                RemoteImage(
+                RemoteBox(
                     modifier = RemoteModifier
-                        .size(40.rdp),
-                    remoteBitmap = bitmap,
-                    contentDescription = null
+                        .size(40.rdp)
+                        .background(secondaryColor, 12.rdp)
                 )
                 RemoteSpacer(12.rdp)
                 RemoteColumn {
