@@ -28,7 +28,6 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.core.graphics.toColorInt
-import com.example.creator.RemoteFancyText
 import com.example.creator.RemoteGradientText
 import com.example.creator.RemoteSpacer
 import com.example.creator.background

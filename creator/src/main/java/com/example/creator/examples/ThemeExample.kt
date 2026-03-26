@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 @RemoteComposable
 @Composable
 fun ThemeExample() {
-    val doc = LocalRemoteComposeCreationState.current.document
+    /*val doc = LocalRemoteComposeCreationState.current.document
 
     val backgroundLight = doc.addColor(Color(0xFFBDBDBD).value.toInt())
     val backgroundDark = doc.addColor(Color(0xFF2F2F2F).value.toInt())
@@ -51,5 +51,5 @@ fun ThemeExample() {
             fontSize = 18.rsp,
             color = RemoteColor(Color(0xFF000000))
         )
-    }
+    }*/
 }

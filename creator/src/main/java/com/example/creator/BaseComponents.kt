@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.Paint
 import androidx.compose.remote.core.operations.DrawTextOnCircle
+import androidx.compose.remote.creation.RemotePath
 import androidx.compose.remote.creation.compose.action.Action
 import androidx.compose.remote.creation.compose.capture.RemoteDensity
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
@@ -16,6 +17,7 @@ import androidx.compose.remote.creation.compose.layout.RemoteOffset
 import androidx.compose.remote.creation.compose.layout.RemoteRow
 import androidx.compose.remote.creation.compose.layout.RemoteText
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
+import androidx.compose.remote.creation.compose.modifier.background
 import androidx.compose.remote.creation.compose.modifier.clickable
 import androidx.compose.remote.creation.compose.modifier.drawWithContent
 import androidx.compose.remote.creation.compose.modifier.size
@@ -32,7 +34,9 @@ import androidx.compose.remote.creation.compose.state.rsp
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.graphics.PaintingStyle
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.toAndroidRectF
 import androidx.compose.ui.unit.sp
 import androidx.core.graphics.toColorInt
 
@@ -55,7 +59,7 @@ fun RemoteButton(
 ) {
     RemoteRow(
         modifier = modifier
-            .background(color = color, 12.rdp)
+            .background(color = color,/* 12.rdp*/)
             .clickable(actions = actions),
         verticalAlignment = RemoteAlignment.CenterVertically,
         horizontalArrangement = RemoteArrangement.CenterHorizontally
@@ -68,23 +72,24 @@ fun RemoteButton(
         ) {
 
             RemoteSpacer(paddings)
-            RemoteText(text = text, fontSize = 20.rsp)
+            RemoteText(text = text, fontSize = 20.rsp, color= RemoteColor(Color.BLACK))
             RemoteSpacer(paddings)
         }
         RemoteSpacer(paddings)
     }
 }
 
+/* todo uncomment in alpha6+
 @Composable
 @RemoteComposable
 @SuppressLint("RestrictedApi")
 fun RemoteModifier.background(color: RemoteColor, cornerRadius: RemoteDp): RemoteModifier {
     return this.drawWithContent {
         val paint = RemotePaint().apply {
-            remoteColor = color
+            this.color = color
         }
-        val size = RemoteDensity.HOST.density * cornerRadius.value
-        drawRoundRect(RemotePaint(paint), cornerRadius = RemoteOffset(size, size))
+        val cornerRadiusPx = remoteDensity.density * cornerRadius.value
+        drawRoundRect(paint, cornerRadius = RemoteOffset(cornerRadiusPx,cornerRadiusPx))
         drawContent()
     }
 }
@@ -94,9 +99,122 @@ fun RemoteModifier.background(color: RemoteColor, cornerRadius: RemoteDp): Remot
 @SuppressLint("RestrictedApi")
 fun RemoteModifier.background(brush: RemoteBrush, cornerRadius: RemoteDp): RemoteModifier {
     return this.drawWithContent {
-        val paint = RemotePaint().apply { applyRemoteBrush(brush, remoteSize) }
-        val size = RemoteDensity.HOST.density * cornerRadius.value
-        drawRoundRect(RemotePaint(paint), cornerRadius = RemoteOffset(size, size))
+        val paint = RemotePaint {
+            applyRemoteBrush(brush, remoteSize)
+        }
+        val cornerRadiusPx = remoteDensity.density * cornerRadius.value
+        drawRoundRect(paint, cornerRadius = RemoteOffset(cornerRadiusPx, cornerRadiusPx))
+        drawContent()
+    }
+}
+
+@Composable
+@RemoteComposable
+@SuppressLint("RestrictedApi")
+fun RemoteModifier.gradientBackground(colors: List<RemoteColor>, cornerRadius: RemoteDp): RemoteModifier {
+    return this.drawWithContent {
+        val brush = RemoteLinearGradient(
+            colors = colors,
+            start = RemoteOffset(0f, 0f),
+            end = RemoteOffset(remoteSize.width, remoteSize.height)
+        )
+        val paint = RemotePaint { applyRemoteBrush(brush, remoteSize) }
+        val cornerRadiusPx = remoteDensity.density * cornerRadius.value
+        drawRoundRect(paint, cornerRadius = RemoteOffset(cornerRadiusPx, cornerRadiusPx))
+        drawContent()
+    }
+}
+
+@Composable
+@RemoteComposable
+@SuppressLint("RestrictedApi")
+fun RemoteFancyText(modifier: RemoteModifier, text: RemoteString) {
+    RemoteCanvas(modifier = modifier) {
+        val brush = RemoteLinearGradient(
+            colors = listOf(RemoteColor(androidx.compose.ui.graphics.Color.Blue), RemoteColor( androidx.compose.ui.graphics.Color.Red)),
+            start = RemoteOffset(0f, 0f),
+            end = RemoteOffset(remoteSize.width, remoteSize.height)
+        )
+        val paint = RemotePaint() {
+            applyRemoteBrush(brush, remoteSize)
+            textSize = 50.rf
+            style = PaintingStyle.Fill
+            this.strokeWidth = 2.rf
+        }
+
+        val path = RemotePath().apply {
+            val size = remoteSize.asSize(this@RemoteCanvas)
+            //this.arcTo(Rect(Offset.Zero, size).toAndroidRectF(), 0f, 90f, true)
+
+           */
+/* moveTo(size.width / 2f, 0f)         // Start at the top center
+            lineTo(size.width, size.height)    // Draw a line to the bottom right
+            lineTo(0f, size.height)    *//*
+        // Draw a line to the bottom left
+            close()
+        }
+
+        drawPath(path, paint)
+
+        drawTextOnPath(
+            text = text,
+            paint = paint,
+            path = path,
+        )
+    }
+}
+
+@Composable
+@RemoteComposable
+@SuppressLint("RestrictedApi")
+fun RemoteGradientText(modifier: RemoteModifier, text: RemoteString) {
+    RemoteCanvas(modifier = modifier) {
+        val brush = RemoteLinearGradient(
+            colors = listOf(RemoteColor(androidx.compose.ui.graphics.Color.Blue), RemoteColor( androidx.compose.ui.graphics.Color.Red)),
+            start = RemoteOffset(0f, 0f),
+            end = RemoteOffset(remoteSize.width, remoteSize.height)
+        )
+        val paint = RemotePaint() {
+            applyRemoteBrush(brush, remoteSize)
+            this.textSize = 120.rf
+            style = PaintingStyle.Stroke
+            this.strokeWidth = 3.rf
+        }
+
+        drawText(
+            text = text,
+            paint = paint,
+            x = 0.rf,
+            y = remoteSize.height
+        )
+    }
+}*/
+
+
+@Composable
+@RemoteComposable
+@SuppressLint("RestrictedApi")
+fun RemoteModifier.background(color: RemoteColor, cornerRadius: RemoteDp): RemoteModifier {
+    return this.drawWithContent {
+        val paint = RemotePaint().apply {
+            remoteColor = color
+        }
+        val cornerRadiusPx = remoteDensity.density * cornerRadius.value
+        drawRoundRect(paint, cornerRadius = RemoteOffset(cornerRadiusPx,cornerRadiusPx))
+        drawContent()
+    }
+}
+
+@Composable
+@RemoteComposable
+@SuppressLint("RestrictedApi")
+fun RemoteModifier.background(brush: RemoteBrush, cornerRadius: RemoteDp): RemoteModifier {
+    return this.drawWithContent {
+        val paint = RemotePaint().apply {
+            applyRemoteBrush(brush, remoteSize)
+        }
+        val cornerRadiusPx = remoteDensity.density * cornerRadius.value
+        drawRoundRect(paint, cornerRadius = RemoteOffset(cornerRadiusPx, cornerRadiusPx))
         drawContent()
     }
 }
@@ -112,48 +230,12 @@ fun RemoteModifier.gradientBackground(colors: List<RemoteColor>, cornerRadius: R
             end = RemoteOffset(remoteSize.width, remoteSize.height)
         )
         val paint = RemotePaint().apply { applyRemoteBrush(brush, remoteSize) }
-        val size = RemoteDensity.HOST.density * cornerRadius.value
-        drawRoundRect(RemotePaint(paint), cornerRadius = RemoteOffset(size, size))
+        val cornerRadiusPx = remoteDensity.density * cornerRadius.value
+        drawRoundRect(paint, cornerRadius = RemoteOffset(cornerRadiusPx, cornerRadiusPx))
         drawContent()
     }
 }
 
-@Composable
-@RemoteComposable
-@SuppressLint("RestrictedApi")
-fun RemoteFancyText(modifier: RemoteModifier, text: RemoteString) {
-    RemoteCanvas(modifier = modifier) {
-        val brush = RemoteLinearGradient(
-            colors = listOf(RemoteColor(androidx.compose.ui.graphics.Color.Blue), RemoteColor( androidx.compose.ui.graphics.Color.Red)),
-            start = RemoteOffset(0f, 0f),
-            end = RemoteOffset(remoteSize.width, remoteSize.height)
-        )
-        val paint = RemotePaint().apply {
-            applyRemoteBrush(brush, remoteSize)
-            textSize = 50f
-            style = Paint.Style.FILL
-            this.strokeWidth = 2f
-        }
-
-        val path = Path().apply {
-            val size = remoteSize.asSize(this@RemoteCanvas)
-            //this.arcTo(Rect(Offset.Zero, size), 0f, 90f, true)
-
-            moveTo(size.width / 2f, 0f)         // Start at the top center
-            lineTo(size.width, size.height)    // Draw a line to the bottom right
-            lineTo(0f, size.height)            // Draw a line to the bottom left
-            close()
-        }
-
-        drawPath(path, paint)
-
-        /*drawTextOnPath(
-            text = text,
-            paint = paint,
-            path = path,
-        )*/
-    }
-}
 
 @Composable
 @RemoteComposable

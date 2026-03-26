@@ -1,18 +1,25 @@
 package com.example.creator.examples
 
 import android.annotation.SuppressLint
+import androidx.compose.remote.core.operations.FloatExpression
 import androidx.compose.remote.creation.compose.action.ValueChange
+import androidx.compose.remote.creation.compose.capture.LocalRemoteComposeCreationState
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
 import androidx.compose.remote.creation.compose.layout.RemoteArrangement
+import androidx.compose.remote.creation.compose.layout.RemoteBox
 import androidx.compose.remote.creation.compose.layout.RemoteColumn
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.layout.RemoteText
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
+import androidx.compose.remote.creation.compose.modifier.background
+import androidx.compose.remote.creation.compose.modifier.clickable
 import androidx.compose.remote.creation.compose.modifier.fillMaxSize
 import androidx.compose.remote.creation.compose.modifier.graphicsLayer
 import androidx.compose.remote.creation.compose.modifier.rememberRemoteScrollState
+import androidx.compose.remote.creation.compose.modifier.size
 import androidx.compose.remote.creation.compose.modifier.verticalScroll
 import androidx.compose.remote.creation.compose.modifier.visibility
+import androidx.compose.remote.creation.compose.state.RemoteColor
 import androidx.compose.remote.creation.compose.state.animateRemoteFloat
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rememberMutableRemoteFloat
@@ -23,10 +30,25 @@ import androidx.compose.remote.creation.compose.state.ri
 import androidx.compose.remote.creation.compose.state.rs
 import androidx.compose.remote.creation.compose.state.rsp
 import androidx.compose.remote.creation.compose.state.selectIfGe
+import androidx.compose.remote.creation.compose.state.withGlobalScope
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.creator.RemoteButton
 import com.example.creator.RemoteSpacer
+
+@Composable
+@RemoteComposable
+fun RemoteScreen1() {
+    RemoteColumn(
+        modifier = RemoteModifier
+            .background(color = RemoteColor(Color.Red))
+            .size(30.rdp)
+    ) {
+
+    }
+}
 
 @SuppressLint("RestrictedApi")
 @Composable
@@ -35,7 +57,11 @@ fun AnimationExample() {
     val alpha = rememberMutableRemoteFloat { 0.rf }
     val visibility = rememberMutableRemoteInt(0)
 
-    val opacity = animateRemoteFloat(alpha, duration = 1f, initialValue = 0f)
+    val state = LocalRemoteComposeCreationState.current
+
+    val timeBasedAnimation = state.time.value
+
+    val opacity = animateRemoteFloat(alpha, duration = 0.3f, initialValue = 0f)
     RemoteColumn(
         modifier = RemoteModifier
             .fillMaxSize()
@@ -50,6 +76,7 @@ fun AnimationExample() {
                 .visibility(visibility)
                 .graphicsLayer(alpha = opacity),
             text = "animated",
+            color = RemoteColor(Color.Black),
             fontSize = 20.rsp
         )
         RemoteSpacer(12.rdp )

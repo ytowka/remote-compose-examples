@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.compose.remote.core)
     implementation(libs.compose.remote.player.core)
     implementation(libs.compose.remote.player.compose)
+    implementation(libs.compose.remote.player.view)
 
     implementation(project(":creator"))
 

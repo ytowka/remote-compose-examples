@@ -13,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.remote.core.CoreDocument
 import androidx.compose.remote.core.RemoteClock
 import androidx.compose.remote.core.RemoteComposeBuffer
+import androidx.compose.remote.core.operations.Header
+import androidx.compose.remote.core.operations.RootContentBehavior
 import androidx.compose.remote.player.compose.ExperimentalRemotePlayerApi
 import androidx.compose.remote.player.compose.RemoteComposePlayerFlags
 import androidx.compose.remote.player.compose.RemoteDocumentPlayer
@@ -24,8 +26,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import com.example.creator.createDocumentV1
 import com.example.creator.createDocumentV2
+import com.example.creator.examples.AnimationExample
 import com.example.creator.examples.DataViewExample
+import com.example.creator.examples.LazyImageExample
+import com.example.creator.examples.RemoteImageExample
+import com.example.creator.examples.RemoteScreen1
+import com.example.creator.examples.TextExamples
+import com.example.creator.examples.getRawBytesAnalogExample
+import com.example.creator.examples.getRawBytesExample
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
@@ -46,8 +56,10 @@ fun RemoteScreen(
     val bitmapLoader = rememberBitmapLoader()
 
     val document by createDocumentV2 {
-        DataViewExample()
+        AnimationExample()
     }.collectAsDocumentState()
+
+    val document1 = RemoteDocument(getRawBytesExample()).document
 
 
     Column(
@@ -56,16 +68,9 @@ fun RemoteScreen(
         document?.let { document ->
             RemoteDocumentPlayer(
                 //modifier = Modifier.wrapContentSize(),
-                document = document/*.also {
-                    it.setRootContentBehavior(
-                        RootContentBehavior.SCROLL_NONE,
-                        RootContentBehavior.ALIGNMENT_TOP,
-                        RootContentBehavior.SIZING_LAYOUT,
-                        RootContentBehavior.LAYOUT_WRAP_CONTENT
-                    )
-                }*/,
-                documentWidth = 0,
-                documentHeight = 0,
+                document = document,
+                documentWidth = document.width,
+                documentHeight = document.height,
                 debugMode = debugMode,
                 onNamedAction = { action, value, stateUpdater ->
                     Toast.makeText(context, "$action: $value", Toast.LENGTH_SHORT).show()
@@ -80,12 +85,30 @@ fun RemoteScreen(
 
 @SuppressLint("RestrictedApi")
 @Composable
+fun RemoteScreen(byteArray: ByteArray) {
+    val document = remember {
+        RemoteDocument(byteArray).document
+    }
+
+    RemoteDocumentPlayer(
+        document = document,
+        documentWidth = document.width,
+        documentHeight = document.height,
+        onNamedAction = { action, value, stateUpdater ->
+            Log.d("debug", "onNamedAction action = $action, value = $value")
+        },
+    )
+}
+
+@SuppressLint("RestrictedApi")
+@Composable
 fun Flow<ByteArray?>.collectAsDocumentState(): State<CoreDocument?> {
     val context: Context = LocalContext.current
     return remember {
         this
             .filterNotNull()
             .map { byteArray ->
+                Log.d("debugg",byteArray.toList().toString())
                 val (doc, duration) = measureTimedValue{ RemoteDocument(byteArray).document }
                 //saveDocument(context, duration, byteArray)
                 doc
