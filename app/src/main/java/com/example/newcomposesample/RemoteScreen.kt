@@ -11,10 +11,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.material3.Text
 import androidx.compose.remote.core.CoreDocument
-import androidx.compose.remote.core.RemoteClock
-import androidx.compose.remote.core.RemoteComposeBuffer
-import androidx.compose.remote.core.operations.Header
-import androidx.compose.remote.core.operations.RootContentBehavior
 import androidx.compose.remote.player.compose.ExperimentalRemotePlayerApi
 import androidx.compose.remote.player.compose.RemoteComposePlayerFlags
 import androidx.compose.remote.player.compose.RemoteDocumentPlayer
@@ -23,23 +19,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import com.example.creator.createDocumentV1
 import com.example.creator.createDocumentV2
-import com.example.creator.examples.AnimationExample
-import com.example.creator.examples.DataViewExample
 import com.example.creator.examples.LazyImageExample
-import com.example.creator.examples.RemoteImageExample
-import com.example.creator.examples.RemoteScreen1
-import com.example.creator.examples.TextExamples
-import com.example.creator.examples.getRawBytesAnalogExample
-import com.example.creator.examples.getRawBytesExample
+import com.example.creator.examples.getBasicDocument
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
-import java.io.ByteArrayInputStream
 import kotlin.io.encoding.Base64
 import kotlin.time.Duration
 import kotlin.time.measureTimedValue
@@ -56,10 +46,8 @@ fun RemoteScreen(
     val bitmapLoader = rememberBitmapLoader()
 
     val document by createDocumentV2 {
-        AnimationExample()
+        LazyImageExample()
     }.collectAsDocumentState()
-
-    val document1 = RemoteDocument(getRawBytesExample()).document
 
 
     Column(
@@ -76,7 +64,7 @@ fun RemoteScreen(
                     Toast.makeText(context, "$action: $value", Toast.LENGTH_SHORT).show()
                     Log.d("debugg", "onNamedAction action = $action, value = $value")
                 },
-                bitmapLoader = bitmapLoader
+                bitmapLoader = bitmapLoader,
             )
         }
         Text("end")

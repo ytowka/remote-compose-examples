@@ -51,6 +51,7 @@ dependencies {
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.material3)
 
+    implementation(libs.compose.remote.creation)
     implementation(libs.compose.remote.core)
     implementation(libs.compose.remote.creation.core)
     implementation(libs.compose.remote.creation.compose)

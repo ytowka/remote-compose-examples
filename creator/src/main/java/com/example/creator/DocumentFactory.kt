@@ -52,11 +52,6 @@ suspend fun createDocumentV1(
         content = {
             content()
         },
-        creationDisplayInfo = CreationDisplayInfo(
-            context.resources.displayMetrics.widthPixels,
-            context.resources.displayMetrics.heightPixels,
-            context.resources.displayMetrics.densityDpi,
-        )
     ).bytes
 }
 
