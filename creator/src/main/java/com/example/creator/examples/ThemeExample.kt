@@ -32,6 +32,8 @@ import androidx.compose.ui.graphics.toArgb
 @RemoteComposable
 @Composable
 fun ThemeExample() {
+    // Работает только на writer api
+
     /*val doc = LocalRemoteComposeCreationState.current.document
 
     val backgroundLight = doc.addColor(Color(0xFFBDBDBD).value.toInt())

@@ -74,23 +74,6 @@ fun RemoteScreen(
 
 @SuppressLint("RestrictedApi")
 @Composable
-fun RemoteScreen(byteArray: ByteArray) {
-    val document = remember {
-        RemoteDocument(byteArray).document
-    }
-
-    RemoteDocumentPlayer(
-        document = document,
-        documentWidth = document.width,
-        documentHeight = document.height,
-        onNamedAction = { action, value, stateUpdater ->
-            Log.d("debug", "onNamedAction action = $action, value = $value")
-        },
-    )
-}
-
-@SuppressLint("RestrictedApi")
-@Composable
 fun Flow<ByteArray?>.collectAsDocumentState(): State<CoreDocument?> {
     val context: Context = LocalContext.current
     return remember {
