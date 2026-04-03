@@ -31,6 +31,7 @@ fun getRawBytesExample(): ByteArray {
 
         val backgroundColor = addThemedColor(backgroundLight.toShort(), backgroundDark.toShort())
 
+
         root {
             column(
                 RecordingModifier()

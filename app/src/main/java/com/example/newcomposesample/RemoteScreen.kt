@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalContext
 import com.example.creator.createDocumentV1
 import com.example.creator.createDocumentV2
 import com.example.creator.examples.LazyImageExample
+import com.example.creator.examples.ScrollViewDemo
 import com.example.creator.examples.getBasicDocument
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
@@ -46,7 +47,7 @@ fun RemoteScreen(
     val bitmapLoader = rememberBitmapLoader()
 
     val document by createDocumentV2 {
-        LazyImageExample()
+        ScrollViewDemo()
     }.collectAsDocumentState()
 
 

@@ -27,7 +27,6 @@ fun loadBitmap(url: String): InputStream {
     return ByteArrayInputStream(byteArrayOf())
 }
 
-@OptIn(ExperimentalRemotePlayerApi::class)
 @SuppressLint("RestrictedApi")
 @Composable
 fun RemoteSimpleScreen() {
