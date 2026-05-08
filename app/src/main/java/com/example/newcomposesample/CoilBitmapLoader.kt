@@ -21,8 +21,8 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
 
-private val resourceMap = mapOf(
-    "glyph_chevron_right_m" to R.drawable.glyph_chevron_right_m
+private val resourceMap = mapOf<String, Int>(
+
 )
 
 
@@ -47,7 +47,6 @@ class CoilBitmapLoader(
                 InputStream.nullInputStream()
             }
         }
-        return InputStream.nullInputStream()
 
         val request = ImageRequest.Builder(context)
             .data(url)

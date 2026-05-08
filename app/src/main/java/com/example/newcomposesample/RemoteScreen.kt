@@ -23,12 +23,8 @@ import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.example.creator.ScreenComparisonSample
 import com.example.creator.createDocumentV1
-import com.example.creator.examples.AnimationSimpleExample
 import com.example.creator.examples.LazyImageExample
-import com.example.creator.examples.ScrollViewDemo
-import com.example.creator.examples.getBasicDocument
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
@@ -48,7 +44,7 @@ fun RemoteScreen(
     val bitmapLoader = rememberBitmapLoader()
 
     val document by createDocumentV1 {
-        ScreenComparisonSample()
+        LazyImageExample()
     }.collectAsDocumentState()
 
 
@@ -84,7 +80,7 @@ fun Flow<ByteArray?>.collectAsDocumentState(): State<CoreDocument?> {
                 Log.d("debugg",byteArray.toList().toString())
 
                 val (doc, duration) = measureTimedValue{ RemoteDocument(byteArray).document }
-                saveDocument(context, duration, byteArray)
+                //saveDocument(context, duration, byteArray)
                 doc
             }
     }.collectAsState(null)

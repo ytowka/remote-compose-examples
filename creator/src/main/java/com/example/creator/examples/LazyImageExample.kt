@@ -1,27 +1,18 @@
 package com.example.creator.examples
 
 import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import androidx.compose.remote.creation.compose.layout.RemoteBox
 import androidx.compose.remote.creation.compose.layout.RemoteCanvas
 import androidx.compose.remote.creation.compose.layout.RemoteColumn
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
 import androidx.compose.remote.creation.compose.layout.RemoteImage
-import androidx.compose.remote.creation.compose.layout.RemoteSize
 import androidx.compose.remote.creation.compose.modifier.RemoteModifier
-import androidx.compose.remote.creation.compose.modifier.background
-import androidx.compose.remote.creation.compose.modifier.drawWithContent
 import androidx.compose.remote.creation.compose.modifier.size
-import androidx.compose.remote.creation.compose.painter.RemoteBitmapPainter
-import androidx.compose.remote.creation.compose.painter.painterRemoteBitmap
 import androidx.compose.remote.creation.compose.state.RemoteBitmap
 import androidx.compose.remote.creation.compose.state.rdp
 import androidx.compose.remote.creation.compose.state.rememberNamedRemoteBitmap
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
-import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
-import androidx.compose.ui.unit.dp
 import androidx.core.graphics.createBitmap
 
 @SuppressLint("RestrictedApi")
@@ -50,7 +41,8 @@ fun LazyImageExample() {
 
         RemoteImage(
             modifier = RemoteModifier.size(100.rdp),
-            bitmap = dynamicBitmap
+            remoteBitmap = dynamicBitmap,
+            contentDescription = null
         )
     }
 }
@@ -59,8 +51,8 @@ fun LazyImageExample() {
 @Composable
 @RemoteComposable
 // Существующий RemoteImage не работает из-за бага
-fun RemoteImage(modifier: RemoteModifier, bitmap: RemoteBitmap) {
+fun RemoteImage(modifier: RemoteModifier, remoteBitmap: RemoteBitmap) {
     RemoteCanvas(modifier) {
-        drawScaledBitmap(bitmap, srcSize = size)
+        drawScaledBitmap(remoteBitmap, srcSize = size)
     }
 }
