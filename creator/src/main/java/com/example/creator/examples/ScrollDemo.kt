@@ -47,7 +47,7 @@ import java.text.DecimalFormat
 @RemoteComposable
 fun ScrollViewDemo() {
     val numElements = 12
-    val scrollState = rememberRemoteScrollState(evenNotches = numElements)
+    val scrollState = rememberRemoteScrollState()
     val dimensionCard = 280.rdp
     val decimalFormat = remember { DecimalFormat("####0.00") }
     RemoteBox(modifier = RemoteModifier, contentAlignment = RemoteAlignment.BottomEnd) {
@@ -101,6 +101,7 @@ fun ScrollViewDemo() {
     }
 }
 
+@SuppressLint("RestrictedApi")
 @Suppress("RestrictedApiAndroidX")
 @Composable
 fun CanvasCalendarMonth(modifier: RemoteModifier = RemoteModifier, month: Int = 0) {
@@ -163,7 +164,7 @@ fun CanvasCalendarMonth(modifier: RemoteModifier = RemoteModifier, month: Int = 
                             RemoteModifier.fillMaxHeight().width(1.rdp).background(Color.DarkGray)
                     )
                 }
-                var modifier = RemoteModifier.padding(left = 8.rf, right = 8.rf)
+                var modifier = RemoteModifier.padding(start = 8.rf, end = 8.rf)
                 RemoteColumn(modifier = modifier, horizontalAlignment = RemoteAlignment.End) {
                     RemoteCanvas(modifier = RemoteModifier.size(20.rdp)) {
                         drawAnchoredText(

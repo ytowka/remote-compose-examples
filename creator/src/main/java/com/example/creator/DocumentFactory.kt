@@ -11,7 +11,6 @@ import androidx.compose.remote.creation.compose.RemoteComposeCreationComposeFlag
 import androidx.compose.remote.creation.compose.capture.WriterEvents
 import androidx.compose.remote.creation.compose.capture.captureSingleRemoteDocument
 import androidx.compose.remote.creation.compose.capture.createCreationDisplayInfo
-import androidx.compose.remote.creation.compose.v2.captureRemoteDocumentV2
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
@@ -31,9 +30,6 @@ import kotlinx.coroutines.flow.take
 @SuppressLint("RestrictedApi")
 @Composable
 fun createDocumentV1(content: @Composable () -> Unit): Flow<ByteArray?> {
-    SideEffect {
-        RemoteComposeCreationComposeFlags.isRemoteApplierEnabled = false
-    }
     val context = LocalContext.current
     return remember {
         flow {
@@ -53,22 +49,4 @@ suspend fun createDocumentV1(
             content()
         },
     ).bytes
-}
-
-@OptIn(ExperimentalRemoteCreationComposeApi::class)
-@SuppressLint("RestrictedApi")
-@Composable
-fun createDocumentV2(content: @Composable () -> Unit): Flow<ByteArray?> {
-    SideEffect {
-        RemoteComposeCreationComposeFlags.isRemoteApplierEnabled = true
-    }
-    val context = LocalContext.current
-    return remember {
-        captureRemoteDocumentV2(
-            creationDisplayInfo = createCreationDisplayInfo(context),
-            writerEvents = WriterEvents(),
-            context = context,
-            content = content
-        ).take(1)
-    }
 }

@@ -6,6 +6,7 @@ import android.graphics.Paint
 import androidx.compose.remote.core.operations.DrawTextOnCircle
 import androidx.compose.remote.creation.RemotePath
 import androidx.compose.remote.creation.compose.action.Action
+import androidx.compose.remote.creation.compose.action.CombinedAction
 import androidx.compose.remote.creation.compose.capture.RemoteDensity
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
 import androidx.compose.remote.creation.compose.layout.RemoteArrangement
@@ -61,7 +62,7 @@ fun RemoteButton(
     RemoteRow(
         modifier = modifier
             .background(color = color,/* 12.rdp*/)
-            .clickable(actions = actions),
+            .clickable(action = CombinedAction(*actions.toTypedArray())),
         verticalAlignment = RemoteAlignment.CenterVertically,
         horizontalArrangement = RemoteArrangement.Center
     ) {

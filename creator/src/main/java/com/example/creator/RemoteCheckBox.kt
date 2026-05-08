@@ -5,6 +5,7 @@ import android.graphics.Color
 import androidx.compose.remote.core.semantics.AccessibleComponent
 import androidx.compose.remote.creation.actions.HostAction
 import androidx.compose.remote.creation.compose.action.Action
+import androidx.compose.remote.creation.compose.action.CombinedAction
 import androidx.compose.remote.creation.compose.layout.RemoteBox
 import androidx.compose.remote.creation.compose.layout.RemoteCanvas
 import androidx.compose.remote.creation.compose.layout.RemoteComposable
@@ -31,10 +32,7 @@ fun RemoteCheckbox(
 
     RemoteBox(
         modifier = modifier
-            .clickable(
-                actions = listOf<Action>(),
-                enabled = true,
-            ),
+            .clickable(CombinedAction()),
     ) {
         RemoteCanvas(
             modifier = RemoteModifier.size(boxSize, boxSize),

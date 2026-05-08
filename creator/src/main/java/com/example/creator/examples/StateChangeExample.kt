@@ -1,5 +1,7 @@
 package com.example.creator.examples
 
+import android.annotation.SuppressLint
+import androidx.compose.remote.creation.compose.action.CombinedAction
 import androidx.compose.remote.creation.compose.layout.RemoteAlignment
 import androidx.compose.remote.creation.compose.layout.RemoteArrangement
 import androidx.compose.remote.creation.compose.layout.RemoteColumn
@@ -12,6 +14,7 @@ import androidx.compose.remote.creation.compose.modifier.verticalScroll
 import androidx.compose.remote.creation.compose.state.rememberMutableRemoteInt
 import androidx.compose.runtime.Composable
 
+@SuppressLint("RestrictedApi")
 @Composable
 @RemoteComposable
 fun StateChangeExample() {
@@ -19,7 +22,7 @@ fun StateChangeExample() {
 
     RemoteColumn(
         modifier = RemoteModifier
-            .clickable()
+            .clickable(CombinedAction())
             .fillMaxSize()
             .verticalScroll(rememberRemoteScrollState())
             .fillMaxSize(),

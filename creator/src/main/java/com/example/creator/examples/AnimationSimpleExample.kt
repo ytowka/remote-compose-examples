@@ -1,6 +1,7 @@
 package com.example.creator.examples
 
 import android.annotation.SuppressLint
+import androidx.compose.remote.creation.compose.action.CombinedAction
 import androidx.compose.remote.creation.compose.action.HostAction
 import androidx.compose.remote.creation.compose.action.ValueChange
 import androidx.compose.remote.creation.compose.capture.LocalRemoteComposeCreationState
@@ -51,19 +52,19 @@ fun AnimationSimpleExample() {
         RemoteText(
             modifier = RemoteModifier
                 .visibility(visibility)
-                .graphicsLayer(alpha = opacity),
+                .graphicsLayer(alpha = 1.rf),
             text = "animated",
             color = RemoteColor(Color.Black),
             fontSize = 20.rsp
         )
         RemoteSpacer(12.rdp)
         RemoteText(
-            text = "animate: ".rs + opacity.toRemoteString(before = 1),
+            text = "animate: ".rs + visibility.toRemoteString(before = 1),
             modifier = RemoteModifier
                 .background(color = Color.LightGray)
                 .clickable(
-                    ValueChange(visibility, (visibility + 1) % 2),
-                    HostAction(name = "changed_visibility".rs, value = visibility)
+                    CombinedAction(ValueChange(visibility, (visibility + 1) % 2),
+                    HostAction(name = "changed_visibility".rs, value = visibility))
                 )
                 .padding(8.rdp),
             fontSize = 20.rsp
